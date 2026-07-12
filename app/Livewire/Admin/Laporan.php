@@ -20,6 +20,7 @@ class Laporan extends Component
     public $startDate;
     public $endDate;
     public $jenis = '';
+    public $tingkatan = ''; // Tambahan: Filter berdasarkan Iqro/Juz Amma/Quran
 
     // Custom Search Dropdown Properties
     public $siswa_id = '';
@@ -42,6 +43,10 @@ class Laporan extends Component
         $this->resetPage();
     }
     public function updatingJenis()
+    {
+        $this->resetPage();
+    }
+    public function updatingTingkatan()
     {
         $this->resetPage();
     }
@@ -69,11 +74,12 @@ class Laporan extends Component
 
     public function render()
     {
-        // 1. Build Query dengan Filter
+        // 1. Build Query dengan Filter Lengkap
         $query = Setoran::with(['siswa', 'ustadz'])
             ->when($this->startDate, fn($q) => $q->whereDate('tanggal', '>=', $this->startDate))
             ->when($this->endDate, fn($q) => $q->whereDate('tanggal', '<=', $this->endDate))
             ->when($this->jenis, fn($q) => $q->where('jenis', $this->jenis))
+            ->when($this->tingkatan, fn($q) => $q->where('tingkatan', $this->tingkatan))
             ->when($this->siswa_id, fn($q) => $q->where('siswa_id', $this->siswa_id));
 
         // 2. Hitung Statistik Ringkasan (Berdasarkan filter saat ini)
@@ -82,6 +88,7 @@ class Laporan extends Component
         $totalHalaman = $statsQuery->sum('jumlah_halaman');
         $totalZiyadah = (clone $statsQuery)->where('jenis', 'ziyadah')->count();
         $totalMurojaah = (clone $statsQuery)->where('jenis', 'murojaah')->count();
+        $totalTadarus = (clone $statsQuery)->where('jenis', 'tadarus')->count(); // Tambahan tadarus
 
         // 3. Ambil Data Tabel (Paginated)
         $setorans = $query->orderByDesc('tanggal')->orderByDesc('jam')->paginate(20);
@@ -98,7 +105,8 @@ class Laporan extends Component
             'totalSetoran',
             'totalHalaman',
             'totalZiyadah',
-            'totalMurojaah'
+            'totalMurojaah',
+            'totalTadarus'
         ));
     }
 }

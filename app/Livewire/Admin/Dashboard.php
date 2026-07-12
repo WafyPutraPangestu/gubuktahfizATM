@@ -34,11 +34,13 @@ class Dashboard extends Component
             $setoranCounts->push($count);
         }
 
-        // 3. DATA CHART: Rasio Ziyadah vs Murojaah Bulan Ini
+        // 3. DATA CHART: Rasio Jenis Hafalan Bulan Ini
         $ziyadahCount = Setoran::whereMonth('tanggal', Carbon::now()->month)
             ->where('jenis', 'ziyadah')->count();
         $murojaahCount = Setoran::whereMonth('tanggal', Carbon::now()->month)
             ->where('jenis', 'murojaah')->count();
+        $tadarusCount = Setoran::whereMonth('tanggal', Carbon::now()->month)
+            ->where('jenis', 'tadarus')->count();
 
         // 4. TABEL & LIST
         $recentSetorans = Setoran::with(['siswa', 'ustadz'])
@@ -63,10 +65,11 @@ class Dashboard extends Component
             'recentSetorans'  => $recentSetorans,
             'topSantris'      => $topSantris,
 
-            // Konversi ke JSON untuk dipakai di Javascript/Alpine
+            // Konversi ke JSON untuk dipakai di Javascript/Alpine (ApexCharts)
             'chartTrenDates'  => $dates->toJson(),
             'chartTrenData'   => $setoranCounts->toJson(),
-            'chartJenisData'  => collect([$ziyadahCount, $murojaahCount])->toJson(),
+            // Memasukkan 3 variabel ke dalam Chart Donut
+            'chartJenisData'  => collect([$ziyadahCount, $murojaahCount, $tadarusCount])->toJson(),
         ]);
     }
 }

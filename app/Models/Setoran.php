@@ -14,13 +14,27 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'tanggal',
     'jam',
     'jenis',
+    'tingkatan',
+    // iqro
+    'iqro_awal',
+    'halaman_iqro_awal',
+    'ayat_iqro_awal',
+    'iqro_akhir',
+    'halaman_iqro_akhir',
+    'ayat_iqro_akhir',
+    // juz ama
     'surah_awal',
     'ayat_awal',
     'surah_akhir',
     'ayat_akhir',
+    // quran
+    'juz',
+    'halaman_awal',
+    'halaman_akhir',
+    // umum
     'jumlah_halaman',
     'nilai',
-    'catatan'
+    'catatan',
 ])]
 class Setoran extends Model
 {
@@ -30,27 +44,28 @@ class Setoran extends Model
     protected function casts(): array
     {
         return [
-            'tanggal'        => 'date',
-            'ayat_awal'      => 'integer',
-            'ayat_akhir'     => 'integer',
-            'jumlah_halaman' => 'decimal:2',
+            'tanggal'            => 'date',
+            'ayat_awal'          => 'integer',
+            'ayat_akhir'         => 'integer',
+            'iqro_awal'          => 'integer',
+            'iqro_akhir'         => 'integer',
+            'halaman_iqro_awal'  => 'integer',
+            'halaman_iqro_akhir' => 'integer',
+            'ayat_iqro_awal'     => 'integer',
+            'ayat_iqro_akhir'    => 'integer',
+            'halaman_awal'       => 'integer',
+            'halaman_akhir'      => 'integer',
+            'jumlah_halaman'     => 'decimal:2',
         ];
     }
 
-    /**
-     * Relasi ke tabel siswas
-     */
     public function siswa(): BelongsTo
     {
         return $this->belongsTo(Siswa::class);
     }
 
-    /**
-     * Relasi ke tabel users (Ustadz)
-     */
     public function ustadz(): BelongsTo
     {
-        // Parameter kedua diisi 'ustadz_id' karena nama method berbeda dengan nama kolom asli
         return $this->belongsTo(User::class, 'ustadz_id');
     }
 }

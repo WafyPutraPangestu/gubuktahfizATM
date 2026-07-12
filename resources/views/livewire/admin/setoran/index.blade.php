@@ -1,122 +1,205 @@
-<div x-data="{ showDeleteModal: false, setoranIdToDelete: null }" style="padding: 2rem 1.5rem;  margin: 0 auto;">
+<div>
+    {{-- Page Header --}}
     <div class="page-header">
         <div class="page-header-text">
-            <h1 class="page-title">Riwayat Setoran</h1>
-            <p class="page-subtitle">Daftar rekapan hafalan santri yang telah dinilai.</p>
+            <h1 class="page-title">Data Setoran</h1>
+            <p class="page-subtitle">Riwayat setoran hafalan seluruh santri.</p>
         </div>
         <div class="page-header-actions">
-            <a href="{{ route('admin.setoran.create') }}" wire:navigate class="btn btn-primary">
-                + INPUT SETORAN
+            <a href="{{ route('admin.setoran.create') }}" wire:navigate class="btn btn-primary btn-md">
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+                Setoran Baru
             </a>
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-header" style="flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 250px;">
-                <input type="text" wire:model.live="search" class="form-input" placeholder="Cari nama santri...">
-            </div>
-            <div>
-                <select wire:model.live="jenisFilter" class="form-select">
-                    <option value="">Semua Jenis</option>
-                    <option value="ziyadah">Ziyadah</option>
-                    <option value="murojaah">Murojaah</option>
-                </select>
+    {{-- Filter Bar --}}
+    <div class="card card-flat mb-5">
+        <div class="card-body">
+            <div class="form-row form-row-3">
+                <div class="form-group">
+                    <label class="form-label">Cari Santri</label>
+                    <div class="input-wrapper input-icon-left">
+                        <svg class="input-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="11" cy="11" r="7" />
+                            <path stroke-linecap="round" d="M21 21l-4.35-4.35" />
+                        </svg>
+                        <input type="text" wire:model.live.debounce.400ms="search" placeholder="Ketik nama santri..."
+                            class="form-input">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Jenis</label>
+                    <select wire:model.live="jenisFilter" class="form-select">
+                        <option value="">Semua Jenis</option>
+                        <option value="ziyadah">Ziyadah</option>
+                        <option value="murojaah">Murojaah</option>
+                        <option value="tadarus">Tadarus</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Tingkatan</label>
+                    <select wire:model.live="tingkatanFilter" class="form-select">
+                        <option value="">Semua Tingkatan</option>
+                        <option value="iqro">Iqro</option>
+                        <option value="juz_ama">Juz Amma</option>
+                        <option value="quran">Al-Qur'an</option>
+                    </select>
+                </div>
             </div>
         </div>
+    </div>
 
+    {{-- Table --}}
+    @if ($setorans->isEmpty())
+        <div class="card">
+            <div class="empty-state">
+                <div class="empty-state-icon">
+                    <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                        stroke-width="1.75">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
+                <h3 class="empty-state-title">Belum Ada Data</h3>
+                <p class="empty-state-desc">
+                    @if ($search || $jenisFilter || $tingkatanFilter)
+                        Tidak ada setoran yang cocok dengan filter kamu. Coba ubah pencarian atau filter.
+                    @else
+                        Belum ada setoran yang tercatat. Mulai dengan menambahkan setoran baru.
+                    @endif
+                </p>
+                @unless ($search || $jenisFilter || $tingkatanFilter)
+                    <a href="{{ route('admin.setoran.create') }}" wire:navigate class="btn btn-primary btn-sm mt-2">
+                        Tambah Setoran
+                    </a>
+                @endunless
+            </div>
+        </div>
+    @else
         <div class="table-wrapper">
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Tanggal</th>
                         <th>Santri</th>
+                        <th>Tanggal &amp; Jam</th>
                         <th>Jenis</th>
-                        <th>Surah & Ayat</th>
+                        <th>Materi</th>
+                        <th>Jml Halaman</th>
                         <th>Nilai</th>
-                        <th>Penilai</th>
-                        <th>Aksi</th>
+                        <th>Ustadz</th>
+                        <th class="text-right">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($setorans as $setoran)
-                        <tr>
+                    @foreach ($setorans as $item)
+                        <tr wire:key="setoran-{{ $item->id }}">
                             <td>
-                                <strong>{{ \Carbon\Carbon::parse($setoran->tanggal)->format('d/m/Y') }}</strong><br>
-                                <span class="text-caption">{{ \Carbon\Carbon::parse($setoran->jam)->format('H:i') }}
-                                    WIB</span>
+                                <div class="flex items-center gap-2">
+                                    <div class="avatar avatar-sm">
+                                        {{ strtoupper(substr($item->siswa->nama, 0, 1)) }}
+                                    </div>
+                                    <span class="font-semibold">{{ $item->siswa->nama }}</span>
+                                </div>
                             </td>
+
                             <td>
-                                <strong
-                                    style="color: var(--color-neutral-900);">{{ $setoran->siswa->nama }}</strong><br>
-                                <span class="text-caption">Kelas: {{ $setoran->siswa->kelas }}</span>
+                                <div>{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d M Y') }}</div>
+                                <div class="text-caption">{{ \Carbon\Carbon::parse($item->jam)->format('H:i') }}</div>
                             </td>
+
                             <td>
                                 <span
-                                    class="badge {{ $setoran->jenis === 'ziyadah' ? 'pill-ziyadah' : 'pill-murojaah' }}">
-                                    {{ $setoran->jenis }}
+                                    class="badge {{ match ($item->jenis) {
+                                        'ziyadah' => 'pill-ziyadah',
+                                        'murojaah' => 'pill-murojaah',
+                                        'tadarus' => 'pill-tadarus',
+                                    } }}">
+                                    {{ ucfirst($item->jenis) }}
                                 </span>
                             </td>
+
                             <td>
-                                <strong>{{ $setoran->surah_awal }}</strong> ({{ $setoran->ayat_awal }})<br>
-                                <span class="text-caption">s/d <strong>{{ $setoran->surah_akhir }}</strong>
-                                    ({{ $setoran->ayat_akhir }})
+                                <span class="badge-juz mr-1">
+                                    @if ($item->tingkatan === 'iqro')
+                                        Iqro
+                                    @elseif ($item->tingkatan === 'juz_ama')
+                                        Juz Amma
+                                    @elseif ($item->tingkatan === 'quran')
+                                        Qur'an
+                                    @endif
                                 </span>
+                                <div class="text-caption mt-1">
+                                    @if ($item->tingkatan === 'iqro')
+                                        Iqro {{ $item->iqro_awal }} Hal
+                                        {{ $item->halaman_iqro_awal }}:{{ $item->ayat_iqro_awal }}
+                                        &rarr;
+                                        Iqro {{ $item->iqro_akhir }} Hal
+                                        {{ $item->halaman_iqro_akhir }}:{{ $item->ayat_iqro_akhir }}
+                                    @elseif ($item->tingkatan === 'juz_ama')
+                                        {{ $item->surah_awal }}:{{ $item->ayat_awal }}
+                                        &rarr;
+                                        {{ $item->surah_akhir }}:{{ $item->ayat_akhir }}
+                                    @elseif ($item->tingkatan === 'quran')
+                                        {{ $item->juz }} &middot; Hal
+                                        {{ $item->halaman_awal }}–{{ $item->halaman_akhir }}
+                                    @endif
+                                </div>
                             </td>
+
+                            <td>{{ number_format($item->jumlah_halaman, 1) }} hal</td>
+
                             <td>
-                                <span class="grade-badge grade-{{ strtolower($setoran->nilai) }}">
-                                    {{ $setoran->nilai }}
-                                </span>
+                                @if (in_array(strtoupper($item->nilai), ['A', 'B', 'C', 'D']))
+                                    <span class="grade-badge grade-{{ strtolower($item->nilai) }}">
+                                        {{ strtoupper($item->nilai) }}
+                                    </span>
+                                @else
+                                    <span class="badge badge-neutral">{{ $item->nilai }}</span>
+                                @endif
                             </td>
-                            <td class="text-caption">{{ $setoran->ustadz->name }}</td>
-                            <td>
-                                <div style="display: flex; gap: 0.5rem;">
-                                    <a href="{{ route('admin.setoran.edit', $setoran->id) }}" wire:navigate
-                                        class="btn btn-outline-primary btn-xs">Edit</a>
-                                    <button @click="showDeleteModal = true; setoranIdToDelete = {{ $setoran->id }}"
-                                        class="btn btn-danger btn-xs">
-                                        Hapus
+
+                            <td>{{ $item->ustadz->name }}</td>
+
+                            <td class="text-right">
+                                <div class="dropdown" x-data="{ open: false }">
+                                    <button @click="open = !open" @click.outside="open = false"
+                                        class="btn btn-ghost btn-icon-sm">
+                                        <svg width="18" height="18" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="6" r="1.5" />
+                                            <circle cx="12" cy="12" r="1.5" />
+                                            <circle cx="12" cy="18" r="1.5" />
+                                        </svg>
                                     </button>
+                                    <div class="dropdown-menu right" x-show="open" x-cloak style="display: none;">
+                                        <a href="{{ route('admin.setoran.edit', $item->id) }}" wire:navigate
+                                            class="dropdown-item">
+                                            Edit Data
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <button wire:click="deleteSetoran({{ $item->id }})"
+                                            wire:confirm="Yakin ingin menghapus setoran ini? Data tidak bisa dikembalikan."
+                                            class="dropdown-item danger">
+                                            Hapus
+                                        </button>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="7">
-                                <div class="empty-state">
-                                    <div class="empty-state-title">Data Tidak Ditemukan</div>
-                                    <p class="empty-state-desc">Belum ada rekapan setoran yang cocok.</p>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforelse
+                    @endforeach
                 </tbody>
             </table>
         </div>
 
-        @if ($setorans->hasPages())
-            <div class="card-footer">
-                {{ $setorans->links() }}
-            </div>
-        @endif
-    </div>
-
-    <!-- Modal Konfirmasi Hapus -->
-    <div x-show="showDeleteModal" style="display: none;" class="modal-backdrop" x-transition.opacity>
-        <div class="modal modal-sm" @click.away="showDeleteModal = false" x-transition.scale.origin.bottom>
-            <div class="modal-header">
-                <h3 class="modal-title">Hapus Setoran?</h3>
-                <button @click="showDeleteModal = false" class="modal-close">✕</button>
-            </div>
-            <div class="modal-body">
-                <p style="color: var(--color-neutral-600);">Apakah Anda yakin ingin menghapus catatan setoran hafalan
-                    ini?</p>
-            </div>
-            <div class="modal-footer">
-                <button @click="showDeleteModal = false" class="btn btn-ghost">Batal</button>
-                <button @click="$wire.deleteSetoran(setoranIdToDelete).then(() => { showDeleteModal = false; })"
-                    class="btn btn-danger">Ya, Hapus!</button>
-            </div>
+        <div class="mt-5">
+            {{ $setorans->links() }}
         </div>
-    </div>
+    @endif
 </div>

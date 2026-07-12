@@ -60,8 +60,9 @@
                 Tambah Santri</div>
         </div>
     </div>
+
     <!-- ============================================== -->
-    <!-- AREA GRAFIK / CHART (Sudah Diperbaiki)         -->
+    <!-- AREA GRAFIK / CHART                            -->
     <!-- ============================================== -->
     <div
         style="display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 1.5rem; @media(min-width: 1024px){ grid-template-columns: 2fr 1fr; }">
@@ -70,34 +71,14 @@
         <div class="card" x-data="{
             init() {
                 let options = {
-                    series: [{
-                        name: 'Setoran',
-                        data: {{ $chartTrenData }}
-                    }],
-                    chart: {
-                        type: 'area',
-                        height: 300,
-                        toolbar: { show: false },
-                        fontFamily: 'var(--font-sans)',
-                        zoom: { enabled: false }
-                    },
+                    series: [{ name: 'Setoran', data: {{ $chartTrenData }} }],
+                    chart: { type: 'area', height: 300, toolbar: { show: false }, fontFamily: 'var(--font-sans)', zoom: { enabled: false } },
                     colors: ['#a3e635'],
-                    fill: {
-                        type: 'gradient',
-                        gradient: { shadeIntensity: 1, opacityFrom: 0.45, opacityTo: 0.05, stops: [50, 100] }
-                    },
+                    fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.45, opacityTo: 0.05, stops: [50, 100] } },
                     dataLabels: { enabled: false },
                     stroke: { curve: 'smooth', width: 3, colors: ['#65a30d'] },
-                    xaxis: {
-        
-                        categories: {{ $chartTrenDates }},
-                        axisBorder: { show: false },
-                        axisTicks: { show: false },
-                        labels: { style: { colors: '#a1a1aa', fontWeight: 600 } }
-                    },
-                    yaxis: {
-                        labels: { style: { colors: '#a1a1aa', fontWeight: 600 } }
-                    },
+                    xaxis: { categories: {{ $chartTrenDates }}, axisBorder: { show: false }, axisTicks: { show: false }, labels: { style: { colors: '#a1a1aa', fontWeight: 600 } } },
+                    yaxis: { labels: { style: { colors: '#a1a1aa', fontWeight: 600 } } },
                     grid: { borderColor: '#e4e4e7', strokeDashArray: 4 }
                 };
                 let chart = new ApexCharts(this.$refs.chartTren, options);
@@ -117,13 +98,9 @@
             init() {
                 let options = {
                     series: {{ $chartJenisData }},
-                    labels: ['Ziyadah', 'Murojaah'],
-                    chart: {
-                        type: 'donut',
-                        height: 300,
-                        fontFamily: 'var(--font-sans)'
-                    },
-                    colors: ['#a3e635', '#27272a'],
+                    labels: ['Ziyadah', 'Murojaah', 'Tadarus'], // Tambah Tadarus
+                    chart: { type: 'donut', height: 300, fontFamily: 'var(--font-sans)' },
+                    colors: ['#a3e635', '#27272a', '#3b82f6'], // Warna: Ziyadah(Primary), Murojaah(Dark), Tadarus(Info/Blue)
                     plotOptions: {
                         pie: {
                             donut: { size: '75%', labels: { show: true, name: { show: true }, value: { show: true, fontSize: '1.5rem', fontWeight: 800, color: '#09090b' }, total: { show: true, showAlways: true, label: 'Total', fontSize: '0.875rem', fontWeight: 700, color: '#71717a' } } }
@@ -146,9 +123,10 @@
             </div>
         </div>
     </div>
+
+    <!-- AREA TABEL DAN DAFTAR SANTRI -->
     <div
         style="display: grid; grid-template-columns: 1fr; gap: 1.5rem; @media(min-width: 1024px){ grid-template-columns: 2fr 1fr; }">
-
         <div class="card">
             <div class="card-header">
                 <h3 class="h5">Riwayat Setoran Terbaru</h3>
@@ -161,7 +139,7 @@
                     <thead>
                         <tr>
                             <th>Santri</th>
-                            <th>Surah & Ayat</th>
+                            <th>Capaian</th>
                             <th>Nilai</th>
                             <th>Waktu</th>
                         </tr>
@@ -172,17 +150,37 @@
                                 <td>
                                     <strong
                                         style="color: var(--color-neutral-900);">{{ $setoran->siswa->nama }}</strong><br>
-                                    <span
-                                        class="badge {{ $setoran->jenis === 'ziyadah' ? 'pill-ziyadah' : 'pill-murojaah' }}"
-                                        style="margin-top: 0.25rem;">
-                                        {{ $setoran->jenis }}
+
+                                    @php
+                                        $pillClass = match ($setoran->jenis) {
+                                            'ziyadah' => 'pill-ziyadah',
+                                            'murojaah' => 'pill-murojaah',
+                                            'tadarus' => 'pill-tadarus',
+                                            default => 'badge-neutral',
+                                        };
+                                    @endphp
+                                    <span class="badge {{ $pillClass }}" style="margin-top: 0.25rem;">
+                                        {{ ucfirst($setoran->jenis) }}
                                     </span>
                                 </td>
                                 <td>
-                                    <strong>{{ $setoran->surah_awal }}</strong> ({{ $setoran->ayat_awal }})<br>
-                                    <span class="text-caption">s/d <strong>{{ $setoran->surah_akhir }}</strong>
-                                        ({{ $setoran->ayat_akhir }})
-                                    </span>
+                                    <!-- LOGIK DINAMIS TINGKATAN (Versi ringkas untuk Dashboard) -->
+                                    @if ($setoran->tingkatan === 'iqro')
+                                        <span class="badge badge-primary"
+                                            style="margin-bottom:4px; font-size:0.6rem; padding: 2px 6px;">IQRO</span><br>
+                                        <strong>Iqro {{ $setoran->iqro_awal }}</strong>
+                                        <span class="text-caption">(Hal {{ $setoran->halaman_iqro_awal }})</span>
+                                    @elseif($setoran->tingkatan === 'juz_ama')
+                                        <span class="badge badge-warning"
+                                            style="margin-bottom:4px; font-size:0.6rem; padding: 2px 6px;">JUZ
+                                            AMMA</span><br>
+                                        <strong>{{ $setoran->surah_awal }}</strong>
+                                        <span class="text-caption">(Ay. {{ $setoran->ayat_awal }})</span>
+                                    @elseif($setoran->tingkatan === 'quran')
+                                        <span class="badge badge-juz"
+                                            style="margin-bottom:4px; font-size:0.6rem; padding: 2px 6px;">{{ strtoupper($setoran->juz) }}</span><br>
+                                        Hal <strong>{{ $setoran->halaman_awal }}</strong>
+                                    @endif
                                 </td>
                                 <td>
                                     <span class="grade-badge grade-{{ strtolower($setoran->nilai) }}">
@@ -249,6 +247,5 @@
                 @endforelse
             </div>
         </div>
-
     </div>
 </div>

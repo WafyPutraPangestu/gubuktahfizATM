@@ -16,12 +16,19 @@ class Index extends Component
 
     public string $search = '';
     public string $jenisFilter = '';
+    public string $tingkatanFilter = '';
 
     public function updatingSearch()
     {
         $this->resetPage();
     }
+
     public function updatingJenisFilter()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingTingkatanFilter()
     {
         $this->resetPage();
     }
@@ -36,13 +43,16 @@ class Index extends Component
     {
         $setorans = Setoran::with(['siswa', 'ustadz'])
             ->when($this->search, function ($query) {
-                // Pencarian berdasarkan nama siswa yang berelasi
+                // Pencarian berdasarkan nama siswa yang berelasi (ILIKE khusus Postgres)
                 $query->whereHas('siswa', function ($q) {
                     $q->where('nama', 'ilike', '%' . $this->search . '%');
                 });
             })
             ->when($this->jenisFilter, function ($query) {
                 $query->where('jenis', $this->jenisFilter);
+            })
+            ->when($this->tingkatanFilter, function ($query) {
+                $query->where('tingkatan', $this->tingkatanFilter);
             })
             ->orderByDesc('tanggal')
             ->orderByDesc('jam')

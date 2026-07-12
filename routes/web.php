@@ -23,7 +23,7 @@ Route::get('/auth/login', Login::class)->name('login')->middleware('guest');
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
-    // Group Route untuk Siswa
+
     Route::prefix('admin/siswa')->name('admin.siswa.')->group(function () {
         Route::get('/', Index::class)->name('index');
         Route::get('/create', Create::class)->name('create');
