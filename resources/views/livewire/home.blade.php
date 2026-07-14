@@ -681,14 +681,9 @@
                 <div>
                     <a href="/" wire:navigate class="navbar-brand"
                         style="margin-bottom: 1rem; display: inline-flex;">
-                        <div class="navbar-brand-icon"
-                            style="background: var(--color-primary-400); color: var(--color-neutral-900);">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-                            </svg>
+                        <div class="navbar-brand-icon" style="background: transparent; border: none;">
+                            <img src="{{ asset('images/LOGO-ATM.png') }}" alt="Logo ATM"
+                                style="width: 100%; height: 100%; object-fit: contain;">
                         </div>
                         <span class="navbar-brand-text" style="color: white;">GubukTahfidz<span
                                 style="color: var(--color-primary-400);">ATM</span></span>
