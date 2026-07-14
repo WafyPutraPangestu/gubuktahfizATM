@@ -8,7 +8,7 @@ use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 #[Layout('layouts.guest')] // Pastikan pakai layout tanpa navbar/sidebar admin
-#[Title('Cek Hafalan Santri — HafizApp')]
+#[Title('Cek Hafalan Santri — GubukTahfidzATM')]
 class Index extends Component
 {
     #[Validate('required', message: 'Kode akses tidak boleh kosong.')]

@@ -8,7 +8,7 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Layout('layouts.guest')]
-#[Title('Progress Hafalan — HafizApp')]
+#[Title('Progress Hafalan — GubukTahfidzATM')]
 class Show extends Component
 {
     public Siswa $siswa;

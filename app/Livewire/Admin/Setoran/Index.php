@@ -10,7 +10,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 
 #[Layout('layouts.app')]
-#[Title('Data Setoran — HafizApp')]
+#[Title('Data Setoran — GubukTahfidzATM')]
 class Index extends Component
 {
     use WithPagination;

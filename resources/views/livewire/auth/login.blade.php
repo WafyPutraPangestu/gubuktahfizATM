@@ -1,21 +1,27 @@
 <div class="min-h-screen flex">
 
     {{-- ============================================================
-         PANEL KIRI — Dekoratif / Branding
+         PANEL KIRI — Foto Wisuda Tahfidz + Overlay Brand
          Tersembunyi di mobile, muncul di lg+
     ============================================================ --}}
     <div class="hidden lg:flex lg:w-[52%] xl:w-[55%] relative overflow-hidden flex-col"
-        style="background: linear-gradient(145deg, var(--color-primary-700) 0%, var(--color-primary-900) 60%, #0a2a27 100%);">
+        style="background-image: url('{{ asset('images/santri1.webp') }}'); background-size: cover; background-position: left center; background-repeat: no-repeat;"
+        role="img" aria-label="Momen Wisuda Tahfidz santri Al Ittihadul Mubarok">
 
-        {{-- Pattern dots --}}
-        <div class="absolute inset-0 opacity-10"
+        {{-- Overlay gradient hijau — tipis, biar teks tetap kontras tapi foto tetap terang --}}
+        <div class="absolute inset-0"
+            style="background: linear-gradient(160deg, rgba(10,42,39,0.72) 0%, rgba(15,52,20,0.5) 45%, rgba(10,42,39,0.28) 100%);">
+        </div>
+
+        {{-- Pattern dots tipis di atas overlay --}}
+        <div class="absolute inset-0 opacity-[0.08]"
             style="background-image: radial-gradient(circle, white 1px, transparent 1px); background-size: 28px 28px;">
         </div>
 
-        {{-- Glow accent --}}
-        <div class="absolute -top-32 -right-32 w-96 h-96 rounded-full opacity-20"
+        {{-- Glow accent lime --}}
+        <div class="absolute -top-32 -right-32 w-96 h-96 rounded-full opacity-25"
             style="background: radial-gradient(circle, var(--color-primary-300), transparent 70%);"></div>
-        <div class="absolute -bottom-20 -left-20 w-80 h-80 rounded-full opacity-15"
+        <div class="absolute -bottom-20 -left-20 w-80 h-80 rounded-full opacity-20"
             style="background: radial-gradient(circle, var(--color-primary-400), transparent 70%);"></div>
 
         {{-- Content --}}
@@ -23,34 +29,32 @@
 
             {{-- Logo --}}
             <a href="/" wire:navigate class="flex items-center gap-2.5 w-fit">
-                <div
-                    class="w-10 h-10 rounded-xl bg-white/15 backdrop-blur flex items-center justify-center border border-white/20">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                        fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-                    </svg>
+                <div class="navbar-brand-icon" style="background: transparent; border: none;">
+                    <img src="{{ asset('images/LOGO-ATM.png') }}" alt="Logo ATM"
+                        style="width: 100%; height: 100%; object-fit: contain;">
                 </div>
-                <span class="text-white font-bold text-lg tracking-tight">HafizApp</span>
+                <span class="text-white font-bold text-lg tracking-tight">GubukTahfidzATM</span>
             </a>
 
             {{-- Center content --}}
-            <div class="flex-1 flex flex-col justify-center gap-10 mt-12">
+            <div class="flex-1 flex flex-col justify-center gap-9 mt-10">
+
+                {{-- Badge foto — menghubungkan visual ke momen aslinya --}}
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/20 bg-white/10 w-fit backdrop-blur">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[--color-primary-300]"></span>
+                    <span class="text-xs font-semibold text-white/80 tracking-wide uppercase">sistem hafalan
+                        santri</span>
+                </div>
 
                 {{-- Headline --}}
                 <div class="space-y-4">
-                    <div
-                        class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/20 bg-white/10 w-fit">
-                        <span class="w-1.5 h-1.5 rounded-full bg-[--color-primary-300]"></span>
-                        <span class="text-xs font-semibold text-white/80 tracking-wide uppercase">Sistem Hafalan
-                            Digital</span>
-                    </div>
-                    <h1 class="text-4xl xl:text-5xl font-extrabold  leading-tight tracking-tight">
+                    <h1 class="text-4xl xl:text-5xl font-extrabold leading-tight tracking-tight">
                         <span class="text-white"> Pantau hafalan</span><br>
                         <span style="color: var(--color-primary-300);">lebih mudah</span><br>
                         <span class="text-white">& terstruktur</span>
                     </h1>
-                    <p class="text-white/60 text-base leading-relaxed ">
+                    <p class="text-white/70 text-base leading-relaxed ">
                         Rekam setiap setoran, lacak progres juz, dan beri laporan transparan kepada orang tua — semua
                         dalam satu tempat.
                     </p>
@@ -75,8 +79,10 @@
             </div>
 
             {{-- Footer panel kiri --}}
-            <div class="text-white/35 text-xs">
-                &copy; {{ date('Y') }} HafizApp. Untuk lembaga tahfidz.
+            <div class="flex items-center justify-between border-t border-white/10 pt-4">
+                <span class="text-white/35 text-xs">&copy; {{ date('Y') }} GubukTahfidzATM. Untuk lembaga
+                    tahfidz.</span>
+                <span class="font-arabic text-white/40 text-sm">بارك الله فيكم</span>
             </div>
         </div>
     </div>
@@ -86,19 +92,32 @@
     ============================================================ --}}
     <div class="flex-1 flex flex-col min-h-screen lg:min-h-0" style="background-color: var(--color-neutral-50);">
 
-        {{-- Mobile: logo di atas --}}
-        <div class="lg:hidden flex items-center justify-between px-6 pt-6 pb-4">
-            <a href="/" wire:navigate class="navbar-brand">
-                <div class="navbar-brand-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-                    </svg>
-                </div>
-                <span class="navbar-brand-text">Hafiz<span>App</span></span>
-            </a>
+        {{-- Mobile: strip foto + logo di atas, biar identitas brand tetap kerasa
+             walau panel kiri disembunyikan --}}
+        <div class="lg:hidden relative mx-4 mt-4 rounded-2xl overflow-hidden"
+            style="height: 128px; background-image: url('{{ asset('images/santri1.webp') }}'); background-size: cover; background-position: left center; background-repeat: no-repeat;"
+            role="img" aria-label="Momen Wisuda Tahfidz santri Al Ittihadul Mubarok">
+            <div class="absolute inset-0"
+                style="background: linear-gradient(160deg, rgba(10,42,39,0.65) 0%, rgba(15,52,20,0.4) 60%, rgba(10,42,39,0.15) 100%);">
+            </div>
+            <div class="relative z-10 flex items-center justify-between h-full px-4">
+                <a href="/" wire:navigate class="flex items-center gap-2">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-white/15 backdrop-blur flex items-center justify-center border border-white/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                            fill="none" stroke="white" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                        </svg>
+                    </div>
+                    <span class="text-white font-bold text-base tracking-tight">GubukTahfidzATM</span>
+                </a>
+                <span
+                    class="text-[10px] font-semibold text-white/80 tracking-wide uppercase bg-white/10 border border-white/20 rounded-full px-2.5 py-1 backdrop-blur">
+                    Sistem Hafalan Digital
+                </span>
+            </div>
         </div>
 
         {{-- Form area --}}
@@ -133,7 +152,7 @@
                             </svg>
                             <input wire:model="email" type="email" id="email" name="email"
                                 class="form-input {{ $errors->has('email') ? 'error' : '' }}"
-                                placeholder="ustadz@hafizapp.id" autocomplete="username" autofocus>
+                                placeholder="ustadz@GubukTahfidzATM.id" autocomplete="username" autofocus>
                         </div>
                         @error('email')
                             <p class="form-error">
@@ -153,10 +172,7 @@
                     <div class="form-group">
                         <div class="flex items-center justify-between">
                             <label for="password" class="form-label form-label-required">Password</label>
-                            <a wire:navigate href="#" class="text-xs font-semibold hover:underline"
-                                style="color: var(--color-primary-600);">
-                                Lupa password?
-                            </a>
+
                         </div>
                         <div class="input-wrapper input-icon-left" style="position: relative;">
                             <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -210,6 +226,7 @@
                         @enderror
                     </div>
 
+
                     {{-- Remember me --}}
                     <label class="form-check cursor-pointer select-none">
                         <input wire:model="remember" type="checkbox" class="form-check-input">
@@ -224,6 +241,7 @@
                         <span wire:loading.remove>
                             Masuk
                         </span>
+
                         <span wire:loading class="flex items-center gap-2">
                             Memproses...
                         </span>
@@ -235,7 +253,7 @@
                 <div class="divider my-7">atau</div>
 
                 {{-- Public access --}}
-                <a wire:navigate href="#" class="btn btn-secondary btn-lg btn-block">
+                <a wire:navigate href="{{ route('hafalan.index') }}" class="btn btn-secondary btn-lg btn-block">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
@@ -244,12 +262,16 @@
                     </svg>
                     Cek Hafalan (Wali Murid)
                 </a>
-
+                <a wire:navigate href="/" class=" p-4 text-xs font-semibold hover:underline"
+                    style="color: var(--color-primary-600);">
+                    KEMBALI KE HALAMAN UTAMA </a>
                 {{-- Catatan kecil --}}
                 <p class="text-center mt-6 text-xs" style="color: var(--color-neutral-400);">
                     Akun hanya untuk ustadz & admin.<br>
                     Wali murid tidak perlu login untuk memantau hafalan.
+
                 </p>
+
 
             </div>
         </div>

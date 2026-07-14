@@ -209,9 +209,63 @@
         opacity: 0.7;
     }
 
+    /* CSS Baru untuk Sosmed dengan Teks di Bawahnya */
+    .portal-socials {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 1.25rem;
+        margin-top: 1.75rem;
+    }
+
+    .portal-social-link {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.375rem;
+        text-decoration: none;
+        color: var(--color-neutral-500);
+        transition: all 0.2s ease;
+    }
+
+    .portal-social-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: white;
+        border: 1px solid var(--color-neutral-200);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+    }
+
+    .portal-social-text {
+        font-size: 0.625rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        transition: color 0.2s ease;
+    }
+
+    .portal-social-link:hover .portal-social-icon {
+        color: var(--color-neutral-900);
+        border-color: var(--color-neutral-400);
+        background: var(--color-neutral-50);
+        transform: translateY(-2px);
+    }
+
+    .portal-social-link:hover .portal-social-text {
+        color: var(--color-neutral-900);
+    }
+
     @media (prefers-reduced-motion: reduce) {
         .portal-emblem::before {
             animation: none;
+        }
+
+        .portal-social-link:hover .portal-social-icon {
+            transform: none;
         }
     }
 </style>
@@ -268,6 +322,62 @@
                 <line x1="12" y1="17" x2="12.01" y2="17" />
             </svg>
             <span>Hubungi Ustadz/Wali Kelas jika Anda tidak mengetahui kode akses ananda.</span>
+        </div>
+
+        {{-- Ikon Sosial Media Beserta Teks --}}
+        <div class="portal-socials">
+            <a href="https://www.instagram.com/gubuktahfidzatm?igsh=NmoweHk4dW8xYWs=" target="_blank"
+                rel="noopener noreferrer" class="portal-social-link">
+                <div class="portal-social-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <rect width="20" height="20" x="2" y="2" rx="5" />
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                        <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+                    </svg>
+                </div>
+                <span class="portal-social-text">Instagram</span>
+            </a>
+
+            <a href="https://youtube.com/@atmrajeg8793?si=Vx4YnlsUJ5XEiovV" target="_blank" rel="noopener noreferrer"
+                class="portal-social-link">
+                <div class="portal-social-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path
+                            d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
+                        <path d="m10 15 5-3-5-3z" />
+                    </svg>
+                </div>
+                <span class="portal-social-text">YouTube</span>
+            </a>
+
+            <a href="https://www.tiktok.com/@atm.rajeg?_r=1&_t=ZS-97yUQg9kjzk" target="_blank"
+                rel="noopener noreferrer" class="portal-social-link">
+                <div class="portal-social-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M9 18a4 4 0 1 0 4-4V4" />
+                        <path d="M13 4c0 3 2.5 5.5 5.5 5.5" />
+                    </svg>
+                </div>
+                <span class="portal-social-text">TikTok</span>
+            </a>
+
+            <a href="https://www.facebook.com/share/198pqMUnvq/" target="_blank" rel="noopener noreferrer"
+                class="portal-social-link">
+                <div class="portal-social-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                    </svg>
+                </div>
+                <span class="portal-social-text">Facebook</span>
+            </a>
         </div>
 
     </div>

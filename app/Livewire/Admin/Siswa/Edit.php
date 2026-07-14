@@ -9,7 +9,7 @@ use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 #[Layout('layouts.app')]
-#[Title('Edit Siswa — HafizApp')]
+#[Title('Edit Siswa — GubukTahfidzATM')]
 class Edit extends Component
 {
 

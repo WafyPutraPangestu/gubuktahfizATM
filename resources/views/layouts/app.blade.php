@@ -31,8 +31,8 @@
         <livewire:component.notify />
 
         {{-- Konten Halaman --}}
-        <main id="main-content" class="container-app"
-            style="margin-top: calc(var(--navbar-height) + 1.5rem); margin-bottom: 3rem; flex: 1;">
+        <main id="main-content" class="{{ $bareMain ?? false ? '' : 'container-app' }}"
+            style="{{ $bareMain ?? false ? 'flex: 1;' : 'margin-top: calc(var(--navbar-height) + 1.5rem); margin-bottom: 3rem; flex: 1;' }}">
             {{ $slot }}
         </main>
 

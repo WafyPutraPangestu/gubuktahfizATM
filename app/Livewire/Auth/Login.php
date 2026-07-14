@@ -11,7 +11,7 @@ use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 #[Layout('layouts.guest')]           // pakai layout tanpa navbar
-#[Title('Masuk — HafizApp')]
+#[Title('Masuk — GubukTahfidzATM')]
 class Login extends Component
 {
     #[Validate('required|email|max:255')]
@@ -72,7 +72,7 @@ class Login extends Component
                 'notify',
                 type: 'success',
                 title: 'Selamat datang kembali!',
-                message: 'Berhasil masuk ke HafizApp.',
+                message: 'Berhasil masuk ke GubukTahfidzATM.',
             );
 
             $this->redirectIntended('/dashboard', navigate: true);

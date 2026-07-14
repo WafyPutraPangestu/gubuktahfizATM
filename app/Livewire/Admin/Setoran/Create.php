@@ -10,7 +10,7 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Layout('layouts.app')]
-#[Title('Input Setoran — HafizApp')]
+#[Title('Input Setoran — GubukTahfidzATM')]
 class Create extends Component
 {
     // Properti untuk Custom Search Dropdown

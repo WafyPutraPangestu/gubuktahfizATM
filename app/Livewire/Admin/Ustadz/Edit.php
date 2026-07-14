@@ -12,7 +12,7 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Layout('layouts.app')]
-#[Title('Edit Akun — HafizApp')]
+#[Title('Edit Akun — GubukTahfidzATM')]
 class Edit extends Component
 {
     public User $user;

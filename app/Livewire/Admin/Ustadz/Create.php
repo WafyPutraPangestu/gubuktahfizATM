@@ -11,7 +11,7 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Layout('layouts.app')]
-#[Title('Tambah Akun — HafizApp')]
+#[Title('Tambah Akun — GubukTahfidzATM')]
 class Create extends Component
 {
     public string $name = '';

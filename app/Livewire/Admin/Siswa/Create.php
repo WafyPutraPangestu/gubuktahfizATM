@@ -10,7 +10,7 @@ use Livewire\Component;
 use Illuminate\Support\Str;
 
 #[Layout('layouts.app')]
-#[Title('Tambah Siswa — HafizApp')]
+#[Title('Tambah Siswa — GubukTahfidzATM')]
 class Create extends Component
 {
 
