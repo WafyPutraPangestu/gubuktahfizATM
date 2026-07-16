@@ -105,7 +105,7 @@
                 </select>
             </div>
 
-            <div class="form-group" style="position: relative;" x-data="{ dropdownOpen: false }">
+            {{-- <div class="form-group" style="position: relative;" x-data="{ dropdownOpen: false }">
                 <label class="form-label">Filter Santri</label>
                 <div @click.away="dropdownOpen = false" style="position: relative;">
                     <input type="text" wire:model.live.debounce.300ms="searchSiswa" @focus="dropdownOpen = true"
@@ -135,6 +135,11 @@
                         @endforelse
                     </div>
                 </div>
+            </div> --}}
+            <div class="form-group">
+                <label class="form-label">Filter Santri</label>
+                <input type="text" wire:model.live.debounce.300ms="searchSiswa" class="form-input"
+                    placeholder="Ketik nama santri..." autocomplete="off">
             </div>
         </div>
     </div>

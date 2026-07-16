@@ -82,7 +82,12 @@ class Laporan extends Component
             ->when($this->endDate, fn($q) => $q->whereDate('tanggal', '<=', $this->endDate))
             ->when($this->jenis, fn($q) => $q->where('jenis', $this->jenis))
             ->when($this->tingkatan, fn($q) => $q->where('tingkatan', $this->tingkatan))
-            ->when($this->siswa_id, fn($q) => $q->where('siswa_id', $this->siswa_id));
+            // Langsung filter tabel berdasarkan ketikan nama santri
+            ->when($this->searchSiswa, function ($q) {
+                $q->whereHas('siswa', function ($query) {
+                    $query->where('nama', 'like', '%' . $this->searchSiswa . '%');
+                });
+            });
     }
 
     public function render()
