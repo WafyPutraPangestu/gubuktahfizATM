@@ -139,6 +139,7 @@
         }
 
         /* ===== TANDA TANGAN ===== */
+        /* ===== TANDA TANGAN ===== */
         .ttd {
             margin-top: 45px;
             width: 100%;
@@ -153,8 +154,6 @@
         .ttd .garis {
             display: block;
             margin-top: 55px;
-            padding-top: 3px;
-            border-top: 1px solid #000000;
             font-weight: bold;
         }
 
@@ -267,7 +266,8 @@
         <tr>
             <td>
                 <span>Rajeg, {{ now()->translatedFormat('d F Y') }}</span>
-                <span class="garis">Wali Kelas / Kordinator Tahfidz</span>
+                <span class="garis">(_________________________)</span>
+                <span style="display: block; margin-top: 4px; font-weight: bold;">Wali Kelas / Kordinator Tahfidz</span>
             </td>
         </tr>
     </table>
