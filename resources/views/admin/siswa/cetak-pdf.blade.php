@@ -267,7 +267,7 @@
         <tr>
             <td>
                 <span>Rajeg, {{ now()->translatedFormat('d F Y') }}</span>
-                <span class="garis">Wali Kelas / Ustadz</span>
+                <span class="garis">Wali Kelas / Kordinator Tahfidz</span>
             </td>
         </tr>
     </table>
