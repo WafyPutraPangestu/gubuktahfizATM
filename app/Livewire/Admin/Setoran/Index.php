@@ -85,7 +85,7 @@ class Index extends Component
             })
             ->when($this->search, function ($query) {
                 $query->whereHas('siswa', function ($q) {
-                    $q->where('nama', 'ilike', '%' . $this->search . '%');
+                    $q->where('nama', 'like', '%' . $this->search . '%');
                 });
             })
             ->when($this->jenisFilter, function ($query) {

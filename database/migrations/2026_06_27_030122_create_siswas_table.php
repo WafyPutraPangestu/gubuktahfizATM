@@ -22,8 +22,8 @@ return new class extends Migration
             $table->enum('status', ['aktif', 'alumni'])->default('aktif');
             $table->timestamps();
         });
-        DB::statement('CREATE EXTENSION IF NOT EXISTS pg_trgm');
-        DB::statement('CREATE INDEX siswas_nama_trgm_idx ON siswas USING GIN (nama gin_trgm_ops)');
+        // DB::statement('CREATE EXTENSION IF NOT EXISTS pg_trgm');
+        // DB::statement('CREATE INDEX siswas_nama_trgm_idx ON siswas USING GIN (nama gin_trgm_ops)');
     }
 
     /**

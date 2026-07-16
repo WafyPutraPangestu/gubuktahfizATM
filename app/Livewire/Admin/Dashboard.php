@@ -56,20 +56,20 @@ class Dashboard extends Component
         // === 1 query agregat besar: hitung semua angka ringkasan sekaligus ===
         $summaryQuery = $scope(Setoran::query());
         $summary = $summaryQuery->selectRaw("
-                COUNT(*) FILTER (WHERE tanggal = ?) as setoran_hari_ini,
-                COUNT(*) FILTER (WHERE tanggal >= ?) as setoran_bulan_ini,
-                COUNT(*) FILTER (WHERE tanggal >= ? AND jenis = 'ziyadah') as ziyadah,
-                COUNT(*) FILTER (WHERE tanggal >= ? AND jenis = 'murojaah') as murojaah,
-                COUNT(*) FILTER (WHERE tanggal >= ? AND jenis = 'tadarus') as tadarus,
-                COUNT(*) FILTER (WHERE tanggal >= ? AND tingkatan = 'iqro') as t_iqro,
-                COUNT(*) FILTER (WHERE tanggal >= ? AND tingkatan = 'juz_ama') as t_juz_ama,
-                COUNT(*) FILTER (WHERE tanggal >= ? AND tingkatan = 'quran') as t_quran,
-                COUNT(*) FILTER (WHERE tanggal >= ? AND UPPER(nilai) = 'A') as nilai_a,
-                COUNT(*) FILTER (WHERE tanggal >= ? AND UPPER(nilai) = 'B') as nilai_b,
-                COUNT(*) FILTER (WHERE tanggal >= ? AND UPPER(nilai) = 'C') as nilai_c,
-                COUNT(*) FILTER (WHERE tanggal >= ? AND UPPER(nilai) = 'D') as nilai_d,
-                COUNT(*) FILTER (WHERE tanggal >= ?) as minggu_ini,
-                COUNT(*) FILTER (WHERE tanggal BETWEEN ? AND ?) as minggu_lalu
+                SUM(CASE WHEN tanggal = ? THEN 1 ELSE 0 END) as setoran_hari_ini,
+                SUM(CASE WHEN tanggal >= ? THEN 1 ELSE 0 END) as setoran_bulan_ini,
+                SUM(CASE WHEN tanggal >= ? AND jenis = 'ziyadah' THEN 1 ELSE 0 END) as ziyadah,
+                SUM(CASE WHEN tanggal >= ? AND jenis = 'murojaah' THEN 1 ELSE 0 END) as murojaah,
+                SUM(CASE WHEN tanggal >= ? AND jenis = 'tadarus' THEN 1 ELSE 0 END) as tadarus,
+                SUM(CASE WHEN tanggal >= ? AND tingkatan = 'iqro' THEN 1 ELSE 0 END) as t_iqro,
+                SUM(CASE WHEN tanggal >= ? AND tingkatan = 'juz_ama' THEN 1 ELSE 0 END) as t_juz_ama,
+                SUM(CASE WHEN tanggal >= ? AND tingkatan = 'quran' THEN 1 ELSE 0 END) as t_quran,
+                SUM(CASE WHEN tanggal >= ? AND UPPER(nilai) = 'A' THEN 1 ELSE 0 END) as nilai_a,
+                SUM(CASE WHEN tanggal >= ? AND UPPER(nilai) = 'B' THEN 1 ELSE 0 END) as nilai_b,
+                SUM(CASE WHEN tanggal >= ? AND UPPER(nilai) = 'C' THEN 1 ELSE 0 END) as nilai_c,
+                SUM(CASE WHEN tanggal >= ? AND UPPER(nilai) = 'D' THEN 1 ELSE 0 END) as nilai_d,
+                SUM(CASE WHEN tanggal >= ? THEN 1 ELSE 0 END) as minggu_ini,
+                SUM(CASE WHEN tanggal BETWEEN ? AND ? THEN 1 ELSE 0 END) as minggu_lalu
             ", [
             $today,
             $startOfMonth,

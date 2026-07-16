@@ -46,9 +46,9 @@ class Index extends Component
     {
         $siswas = Siswa::query()
             ->when($this->search, function ($query) {
-                $query->where('nama', 'ilike', '%' . $this->search . '%')
-                    ->orWhere('nis', 'ilike', '%' . $this->search . '%')
-                    ->orWhere('kelas', 'ilike', '%' . $this->search . '%');
+                $query->where('nama', 'like', '%' . $this->search . '%')
+                    ->orWhere('nis', 'like', '%' . $this->search . '%')
+                    ->orWhere('kelas', 'like', '%' . $this->search . '%');
             })
             ->when($this->statusFilter, function ($query) {
                 $query->where('status', $this->statusFilter);

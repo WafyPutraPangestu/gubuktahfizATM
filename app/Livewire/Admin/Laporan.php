@@ -87,18 +87,18 @@ class Laporan extends Component
 
     public function render()
     {
-        // 1. Statistik ringkasan — 1 query saja pakai conditional aggregation (Postgres FILTER)
+        // 1. Statistik ringkasan — Diubah ke sintaks MySQL (SUM CASE)
         $stats = $this->baseQuery()
             ->selectRaw("
                 COUNT(*) as total_setoran,
                 COALESCE(SUM(jumlah_halaman), 0) as total_halaman,
-                COUNT(*) FILTER (WHERE jenis = 'ziyadah') as total_ziyadah,
-                COUNT(*) FILTER (WHERE jenis = 'murojaah') as total_murojaah,
-                COUNT(*) FILTER (WHERE jenis = 'tadarus') as total_tadarus
+                SUM(CASE WHEN jenis = 'ziyadah' THEN 1 ELSE 0 END) as total_ziyadah,
+                SUM(CASE WHEN jenis = 'murojaah' THEN 1 ELSE 0 END) as total_murojaah,
+                SUM(CASE WHEN jenis = 'tadarus' THEN 1 ELSE 0 END) as total_tadarus
             ")
             ->first();
 
-        // 2. Data tabel (paginated) — query baru, hanya select relasi yang dipakai di view
+        // 2. Data tabel (paginated)
         $setorans = $this->baseQuery()
             ->with([
                 'siswa:id,nama,kelas',
@@ -108,12 +108,12 @@ class Laporan extends Component
             ->orderByDesc('jam')
             ->paginate(20);
 
-        // 3. Dropdown pencarian santri
+
         $siswas = [];
         if (strlen($this->searchSiswa) > 0 && empty($this->siswa_id)) {
             $siswas = Siswa::query()
                 ->select('id', 'nama', 'kelas')
-                ->where('nama', 'ilike', '%' . $this->searchSiswa . '%')
+                ->where('nama', 'like', '%' . $this->searchSiswa . '%')
                 ->take(5)
                 ->get();
         }
@@ -121,11 +121,11 @@ class Laporan extends Component
         return view('livewire.admin.laporan', [
             'setorans' => $setorans,
             'siswas' => $siswas,
-            'totalSetoran' => $stats->total_setoran,
-            'totalHalaman' => $stats->total_halaman,
-            'totalZiyadah' => $stats->total_ziyadah,
-            'totalMurojaah' => $stats->total_murojaah,
-            'totalTadarus' => $stats->total_tadarus,
+            'totalSetoran' => $stats->total_setoran ?? 0,
+            'totalHalaman' => $stats->total_halaman ?? 0,
+            'totalZiyadah' => $stats->total_ziyadah ?? 0,
+            'totalMurojaah' => $stats->total_murojaah ?? 0,
+            'totalTadarus' => $stats->total_tadarus ?? 0,
         ]);
     }
 }

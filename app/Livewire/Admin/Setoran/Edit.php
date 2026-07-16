@@ -233,7 +233,7 @@ class Edit extends Component
         $siswas = [];
         if (strlen($this->searchSiswa) > 0 && $this->searchSiswa !== $this->setoran->siswa->nama) {
             $siswas = Siswa::query()
-                ->where('nama', 'ilike', '%' . $this->searchSiswa . '%')
+                ->where('nama', 'like', '%' . $this->searchSiswa . '%')
                 ->where('status', 'aktif')
                 ->take(5)
                 ->get();

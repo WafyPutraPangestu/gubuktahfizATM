@@ -163,9 +163,9 @@ class Create extends Component
     {
         $siswas = [];
         if (strlen($this->searchSiswa) > 0) {
-            // ILIKE khusus PostgreSQL (case-insensitive search)
+
             $siswas = Siswa::query()
-                ->where('nama', 'ilike', '%' . $this->searchSiswa . '%')
+                ->where('nama', 'like', '%' . $this->searchSiswa . '%')
                 ->where('status', 'aktif')
                 ->take(5)
                 ->get();
